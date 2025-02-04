@@ -1,0 +1,32 @@
+<div class="container">
+    <div class="controls">
+      <select (change)="onVoiceChange($event)">
+        <option *ngFor="let voice of voices" [value]="voice.name">{{ voice.name }}</option>
+      </select>
+      <button (click)="playSpeech()">▶️ Play</button>
+      <button (click)="pauseSpeech()">⏸ Pause</button>
+      <button (click)="resumeSpeech()">▶️ Resume</button>
+      <button (click)="stopSpeech()">⏹ Stop</button>
+      <button (click)="downloadAudio()">⬇ Download</button>
+    </div>
+  <div class="editor">
+    <div class="quill" #editorContainer>
+      <quill-editor [(ngModel)]="inputText"></quill-editor>
+    </div>
+    <div class="custom-box">
+      <div class="actions">
+        <!-- <input type="file" id="imageInput" (change)="extractTextFromImage($event)" hidden />
+        <label for="imageInput"><i class="bi bi-image"></i></label> -->
+
+        <input type="file" id="pdfInput" (change)="extractTextFromPDF($event)" hidden />
+        <label for="pdfInput"><i class="bi bi-file-pdf"></i></label>
+
+        <input type="file" id="wordInput" (change)="extractTextFromWord($event)" hidden />
+        <label for="wordInput"><i class="bi bi-file-earmark-word"></i></label>
+
+        <i class="bi bi-share" (click)="shareAsWord()"></i>
+      </div>
+    </div>
+  </div>
+
+</div>
