@@ -18,10 +18,10 @@
         <!-- <input type="file" id="imageInput" (change)="extractTextFromImage($event)" hidden />
         <label for="imageInput"><i class="bi bi-image"></i></label> -->
 
-        <input type="file" id="pdfInput" (change)="extractTextFromPDF($event)" hidden />
-        <label for="pdfInput"><i class="bi bi-file-pdf"></i></label>
+        <input type="file" id="pdfInput" accept=".pdf" (change)="extractTextFromPDF($event)" hidden />
+        <label for="pdfInput" ><i class="bi bi-file-pdf"></i></label>
 
-        <input type="file" id="wordInput" (change)="extractTextFromWord($event)" hidden />
+        <input type="file" id="wordInput"  accept=".docx,.doc"  (change)="extractTextFromWord($event)" hidden />
         <label for="wordInput"><i class="bi bi-file-earmark-word"></i></label>
 
         <i class="bi bi-share" (click)="shareAsWord()"></i>

@@ -32,11 +32,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-      this.highlightSpokenText();
-  }
-
-  onContentChanged(event: any) {
-    this.inputText = event.text.trim();
   }
 
   playSpeech() {
@@ -56,22 +51,22 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
 
-  extractPlainText(html: any) {
-    const tempElement = document.createElement('div');
-    tempElement.innerHTML = html;
-    return tempElement.textContent || tempElement.innerText || '';
-  }
+
 
   loadVoices() {
     if (typeof window !== 'undefined' && window.speechSynthesis) {
       this.synth = window.speechSynthesis;
-      if (this.synth) {
-        if (this.synth) {
-          if (this.synth) {
-            this.voices = this.synth.getVoices();
-            console.log('Voices:', this.voices);
-          }
-        }
+      
+      // Load voices asynchronously
+      this.voices = this.synth.getVoices();
+      console.log('Voices initially:', this.voices);
+
+      if (this.voices.length === 0) {
+        // Listen for voiceschanged event
+        this.synth.onvoiceschanged = () => {
+          this.voices = this.synth!.getVoices();
+          console.log('Voices updated:', this.voices);
+        };
       }
     }
   }
@@ -89,13 +84,63 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.isRecording = true;
   }
 
-  stopRecording() {
-    if (this.mediaRecorder && this.isRecording) {
-      this.mediaRecorder.stop();
-      this.isRecording = false;
-    }
+stopRecording() {
+  if (this.mediaRecorder && this.isRecording) {
+    this.mediaRecorder.stop();
+    this.isRecording = false;
+
+    // Capture the audio as webm
+    this.mediaRecorder.onstop = () => {
+      const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' }); // Use webm format
+      this.audioURL = URL.createObjectURL(audioBlob);
+      console.log("Generated Audio URL:", this.audioURL); // Debugging
+    };
+    // this.downloadAudio();
+  }
+}
+
+downloadAudio() {
+  if (!this.audioURL) {
+    alert("No recorded audio available to download.");
+    return;
   }
 
+  // Fetch the audio blob from the recorded URL and save it
+  fetch(this.audioURL)
+    .then(response => response.blob())
+    .then(blob => {
+      // You can offer the WebM file directly or use an external service for MP3 conversion
+      saveAs(blob, "audio.webm"); // If you want to save it as webm
+
+      // To save as MP3, you would need a server-side solution to convert WebM to MP3,
+      // or a client-side library like ffmpeg.js for MP3 conversion.
+      // Example: saveAs(mp3Blob, "audio.mp3"); // Assuming mp3Blob is the converted MP3.
+    })
+    .catch(error => console.error("Error downloading audio:", error));
+}
+  pauseSpeech() {
+  if (this.synth && this.synth.speaking && !this.isPaused) {
+    this.synth.pause();
+    this.isPaused = true;
+  }
+  }
+  resumeSpeech() {
+  if (this.synth && this.synth.paused && this.isPaused) {
+    this.synth.resume();
+    this.isPaused = false;
+  }
+  }
+  stopSpeech() {
+  if (this.synth && (this.synth.speaking || this.synth.paused)) {
+    this.synth.cancel();
+    this.isPaused = false;
+    this.stopRecording();
+    this.removeHighlights();
+  }
+  }
+  onVoiceChange(event: any) {
+  this.selectedVoice = event.target.value;
+}
   highlightWord(charIndex: number) {
     const words = this.inputText.split(' ');
     let currentWordIndex = 0;
@@ -129,11 +174,18 @@ export class AppComponent implements OnInit, AfterViewInit {
     const editor = this.editorContainer.nativeElement.querySelector('.ql-editor');
     editor.innerHTML = this.inputText;
   }
-
+  extractPlainText(html: any) {
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = html;
+    return tempElement.textContent || tempElement.innerText || '';
+  }
  async extractTextFromPDF(event: any) {
   const file = event.target.files[0]; // Fix file selection
   if (!file) return console.error('No file selected');
-
+   if (file.type !== 'application/pdf') {
+      alert('Please select a valid PDF file.');
+      return;
+    }
   const reader = new FileReader();
   reader.readAsArrayBuffer(file);
 
@@ -164,7 +216,11 @@ export class AppComponent implements OnInit, AfterViewInit {
   async extractTextFromWord(event: any) {
     const file = event.target.files[0];
     if (!file) return;
-
+  const validExtensions = ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    if (!validExtensions.includes(file.type)) {
+      alert('Please select a valid Word file.');
+      return;
+    }
     const reader = new FileReader();
     reader.onload = async (e) => {
       const result = await mammoth.extractRawText({ arrayBuffer: e.target!.result as ArrayBuffer });
@@ -174,51 +230,36 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
 
-  downloadAudio() {
-    if (this.audioURL) {
-      saveAs(this.audioURL, 'audio.mp3');
-    }
-  }
 
- shareAsWord() {
+
+
+async shareAsWord() {
   const plainText = this.extractPlainText(this.inputText).trim();
-  
-  // Create a new zip-based Word document
-  const zip = new PizZip();
-  const doc = new Docxtemplater(zip);
-  // Load content
-  doc.loadZip(zip);
-  doc.setData({ text: plainText });
 
   try {
+    // Fetch a DOCX template from assets or server
+    const response = await fetch('/assets/template.docx'); // Ensure this file exists
+    const arrayBuffer = await response.arrayBuffer();
+    // Load the file into PizZip
+    const zip = new PizZip(arrayBuffer);
+    const doc = new Docxtemplater(zip);
+    // Set the data
+    doc.setData({ text: plainText });
+
+    // Render the document
     doc.render();
-    const output = doc.getZip().generate({ type: 'blob', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+
+    // Generate the final DOCX file
+    const output = doc.getZip().generate({
+      type: 'blob',
+      mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    });
+
     saveAs(output, 'document.docx');
   } catch (error) {
-    console.error("Error generating DOCX:", error);
+    console.error('Error generating DOCX:', error);
   }
 }
-  pauseSpeech() {
-  if (this.synth && this.synth.speaking && !this.isPaused) {
-    this.synth.pause();
-    this.isPaused = true;
-  }
-  }
-  resumeSpeech() {
-  if (this.synth && this.synth.paused && this.isPaused) {
-    this.synth.resume();
-    this.isPaused = false;
-  }
-  }
-  stopSpeech() {
-  if (this.synth && (this.synth.speaking || this.synth.paused)) {
-    this.synth.cancel();
-    this.isPaused = false;
-    this.stopRecording();
-    this.removeHighlights();
-  }
-  }
-  onVoiceChange(event: any) {
-  this.selectedVoice = event.target.value;
-}
+
+
 }
