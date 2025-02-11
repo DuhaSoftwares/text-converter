@@ -1,0 +1,36 @@
+<div class="content">
+    <div class="heading">
+        <div class="title">Welcome to Text Editor</div>
+        <div class="sub-title">Edit,Extract, listen, and share your text easily</div>
+        <div class="details">
+            Upload PDF and Word files, extract text, and share as Word document. You can also edit and listen to the text.
+        </div>
+
+    </div>
+
+        <div class="quill" #editorContainer>
+            <quill-editor [modules]="editorConfig" theme="snow" [(ngModel)]="inputText"
+                (ngModelChange)="onChange()"></quill-editor>
+        </div>
+        <div class="note">
+            <p>upload pdf and word files and extract text and share as word document you can edit and listen to the text as well
+            </p>
+        </div>
+    <div class="controls" *ngIf="showSpeechControls">
+        <button (click)="playSpeech()">▶️ Play</button>
+        <button (click)="pauseSpeech()">⏸ Pause</button>
+        <button (click)="resumeSpeech()">▶️ Resume</button>
+        <button (click)="stopSpeech()">⏹ Stop</button>
+        <button (click)="downloadAudio()">⬇ Download</button>
+    </div> 
+ 
+        <div class="actions">
+            <input type="file" id="pdfInput" accept=".pdf" (change)="extractTextFromPDF($event)" hidden />
+            <label for="pdfInput">Upload <i class="bi bi-file-pdf"></i></label>
+            <input type="file" id="wordInput" accept=".docx,.doc" (change)="extractTextFromWord($event)" hidden />
+            <label for="wordInput">Upload <i class="bi bi-file-earmark-word"></i></label>
+            <label>Share As <i class="bi bi-share" (click)="shareAsWord()"></i> </label> 
+        </div>
+
+
+</div>
