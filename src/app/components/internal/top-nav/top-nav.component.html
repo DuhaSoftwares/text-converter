@@ -4,9 +4,10 @@
 </div>
 <div class="menu">
     <a routerLink="/home" routerLinkActive="active">Home</a>
-    <a routerLink="/editor" routerLinkActive="active">Editor</a>
-    <a routerLink="/about" routerLinkActive="active">About</a>
-    <a routerLink="/contact" routerLinkActive="active">Contact</a>
+    <a (click)="editor()" routerLinkActive="active">Editor</a>
+    <a (click)="aboutus()" routerLinkActive="active">About</a>
+    <a (click)="contactUs()" routerLinkActive="active">Contact</a>
+    <a (click)="blog()" routerLinkActive="active">Blog</a>
 </div>
 <div class="profile"></div>
 </div>
