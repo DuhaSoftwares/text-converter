@@ -1,36 +1,71 @@
-<div class="content">
-    <div class="heading">
-        <div class="title">Welcome to Text Editor</div>
-        <div class="sub-title">Edit,Extract, listen, and share your text easily</div>
-        <div class="details">
-            Upload PDF and Word files, extract text, and share as Word document. You can also edit and listen to the text.
-        </div>
-
+<div class="container py-5">
+    <!-- Heading Section -->
+    <div class="text-center mb-5">
+      <h1 class="display-4">Welcome to Text Editor</h1>
+      <p class="lead">Edit, extract, listen, and share your text easily</p>
+      <p class="text-muted">
+        Upload PDF and Word files, extract text, and share as a Word document.
+        You can also edit and listen to the text.
+      </p>
     </div>
-
-        <div class="quill" #editorContainer>
-            <quill-editor [modules]="editorConfig" theme="snow" [(ngModel)]="inputText"
-                (ngModelChange)="onChange()"></quill-editor>
-        </div>
-        <div class="note">
-            <p>upload pdf and word files and extract text and share as word document you can edit and listen to the text as well
-            </p>
-        </div>
-    <div class="controls" *ngIf="showSpeechControls">
-        <button (click)="playSpeech()">▶️ Play</button>
-        <button (click)="pauseSpeech()">⏸ Pause</button>
-        <button (click)="resumeSpeech()">▶️ Resume</button>
-        <button (click)="stopSpeech()">⏹ Stop</button>
-        <button (click)="downloadAudio()">⬇ Download</button>
-    </div> 
- 
-        <div class="actions">
-            <input type="file" id="pdfInput" accept=".pdf" (change)="extractTextFromPDF($event)" hidden />
-            <label for="pdfInput">Upload <i class="bi bi-file-pdf"></i></label>
-            <input type="file" id="wordInput" accept=".docx,.doc" (change)="extractTextFromWord($event)" hidden />
-            <label for="wordInput">Upload <i class="bi bi-file-earmark-word"></i></label>
-            <label>Share As <i class="bi bi-share" (click)="shareAsWord()"></i> </label> 
-        </div>
-
-
-</div>
+  
+    <!-- Editor Card -->
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body p-0">
+        <quill-editor
+          [modules]="editorConfig"
+          theme="snow"
+          [(ngModel)]="inputText"
+          (ngModelChange)="onChange()"
+          class="quill-editor"
+        ></quill-editor>
+      </div>
+    </div>
+  
+    <!-- Note / Info Alert -->
+    <div class="alert alert-info text-center">
+      Upload PDF and Word files to extract text, share as a Word document, edit, and even listen to your text.
+    </div>
+  
+    <!-- Speech Controls -->
+    <div class="d-flex justify-content-center mb-4" *ngIf="showSpeechControls">
+      <button class="btn btn-primary mx-2" (click)="playSpeech()">▶️ Play</button>
+      <button class="btn btn-secondary mx-2" (click)="pauseSpeech()">⏸ Pause</button>
+      <button class="btn btn-success mx-2" (click)="resumeSpeech()">▶️ Resume</button>
+      <button class="btn btn-danger mx-2" (click)="stopSpeech()">⏹ Stop</button>
+      <button class="btn btn-warning mx-2" (click)="downloadAudio()">⬇ Download</button>
+    </div>
+  
+    <!-- Actions -->
+    <div class="d-flex justify-content-center">
+      <div class="btn-group" role="group">
+        <!-- PDF Upload -->
+        <input
+          type="file"
+          id="pdfInput"
+          accept=".pdf"
+          (change)="extractTextFromPDF($event)"
+          hidden
+        />
+        <label for="pdfInput" class="btn btn-outline-primary">
+          Upload PDF <i class="bi bi-file-pdf"></i>
+        </label>
+        <!-- Word Upload -->
+        <input
+          type="file"
+          id="wordInput"
+          accept=".docx,.doc"
+          (change)="extractTextFromWord($event)"
+          hidden
+        />
+        <label for="wordInput" class="btn btn-outline-primary">
+          Upload Word <i class="bi bi-file-earmark-word"></i>
+        </label>
+        <!-- Share As Word -->
+        <button class="btn btn-outline-success" (click)="shareAsWord()">
+          Share As Word <i class="bi bi-share"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  

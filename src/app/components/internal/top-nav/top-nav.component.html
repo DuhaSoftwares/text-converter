@@ -1,13 +1,96 @@
-<div class="nav">
-<div class="logo">
-    <label>LOGO</label>
-</div>
-<div class="menu">
-    <a routerLink="/home" routerLinkActive="active">Home</a>
-    <a (click)="editor()" routerLinkActive="active">Editor</a>
-    <a (click)="aboutus()" routerLinkActive="active">About</a>
-    <a (click)="contactUs()" routerLinkActive="active">Contact</a>
-    <a (click)="blog()" routerLinkActive="active">Blog</a>
-</div>
-<div class="profile"></div>
-</div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <div class="container-fluid">
+      <!-- Logo -->
+      <a class="navbar-brand" routerLink="/home">LOGO</a>
+      
+      <!-- Toggler for mobile view -->
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarAdvanced"
+        aria-controls="navbarAdvanced"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <!-- Navbar links and profile -->
+      <div class="collapse navbar-collapse" id="navbarAdvanced">
+        <!-- Navigation Menu -->
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLink="/home"
+              routerLinkActive="active"
+              >Home</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              (click)="editor()"
+              routerLinkActive="active"
+              >Editor</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              (click)="aboutus()"
+              routerLinkActive="active"
+              >About</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              (click)="contactUs()"
+              routerLinkActive="active"
+              >Contact</a
+            >
+          </li>
+          <li class="nav-item" >
+            <a
+              class="nav-link"
+              (click)="blog()"
+              routerLinkActive="active"
+              >Blog</a
+            >
+          </li>
+        </ul>
+  
+        <!-- Profile Section with Dropdown -->
+        <div class="d-flex align-items-center">
+          <div class="dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+        
+              role="button"
+              id="profileDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <!-- Placeholder Profile Image -->
+              <img
+                src="https://www.iconpacks.net/icons/1/free-user-icon-295-thumb.png"
+                alt="Profile"
+                class="rounded-circle"
+                width="40"
+                height="40"
+              />
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+              <li><a class="dropdown-item" href="#">My Profile</a></li>
+              <li><a class="dropdown-item" href="#">Settings</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li><a class="dropdown-item" href="#">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  
