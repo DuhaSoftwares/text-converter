@@ -1,0 +1,74 @@
+.blog-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-family: "Poppins", sans-serif;
+    line-height: 1.7;
+    color: #333;
+}
+
+.blog-container h1 {
+    font-size: 2.5rem;
+    color: #007bff;
+    text-align: center;
+}
+
+.blog-container .date {
+    font-size: 1rem;
+    text-align: center;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.blog-container .blog-image {
+    width: 100%;
+    border-radius: 5px;
+    margin: 20px 0;
+}
+
+.blog-container h2 {
+    font-size: 1.5rem;
+    color: #222;
+    margin-top: 20px;
+    border-left: 4px solid #007bff;
+    padding-left: 10px;
+}
+
+.blog-container p {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+.blog-container .cta {
+    font-size: 1.3rem;
+    text-align: center;
+    background: #007bff;
+    color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+/* 📌 Responsive Design */
+@media screen and (max-width: 768px) {
+    .blog-container {
+        padding: 15px;
+        margin: 20px;
+    }
+
+    .blog-container h1 {
+        font-size: 2rem;
+    }
+
+    .blog-container h2 {
+        font-size: 1.3rem;
+    }
+
+    .blog-container p {
+        font-size: 1rem;
+    }
+}

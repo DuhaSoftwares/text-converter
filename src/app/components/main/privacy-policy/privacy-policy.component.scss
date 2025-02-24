@@ -1,0 +1,37 @@
+.policy-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 40px 20px;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.policy-container h1 {
+    font-size: 2.5rem;
+    color: #007bff;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.policy-container h2 {
+    font-size: 1.8rem;
+    margin-top: 20px;
+    color: #333;
+}
+
+.policy-container p,
+.policy-container ul {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.policy-container a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.policy-container a:hover {
+    text-decoration: underline;
+}

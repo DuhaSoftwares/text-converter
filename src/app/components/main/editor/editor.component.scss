@@ -1,105 +1,30 @@
-.content {
-    padding: 5px 5px 5px 65px;
-    display: flex;
-    flex-direction: column;
-    .heading{
-        display:flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        .title{
-            font-size: 32px;
-            font-weight: 600;
-            line-height: 23px;
-            color: #141414;
-            padding: 5px;
-            margin: 5px 0px;
-        }
-        .sub-title{
-            font-size: 20px;
-            font-weight: 500;
-            line-height: 23px;
-            color: #141414;
-            padding: 5px;
-            margin: 5px 0px;
-        }
-
-        .details{
-            font-size: 16px;
-                font-weight: 400;
-                line-height: 21px;
-                color: #3a3939;
-                padding: 5px;
-                margin: 5px 0px;
-        }
-
-    }
-
-::ng-deep .ql-container {
-        max-height: 600px;
-        width: 100%;
-        /* Set the max height */
-        overflow-y: auto;
-        /* Enable vertical scrolling */
-    }
-
-    ::ng-deep .ql-editor .ql-snow {
-        width: 100% !important;
-        min-height: 200px;
-        /* Ensure some height for text */
-        max-height: 400px;
-        /* Set max height */
-        overflow-y: auto;
-    }
-        ::ng-deep .ql-snow{
-            width: 100% !important;
-        }
-
-    ::ng-deep .ql-toolbar {
-        position: sticky;
-        top: 0;
-        background: white;
-        z-index: 10;
-    }
-
-    .controls{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin-top: 20px;
-        button{
-            font-size: 20px;
-            font-weight: 600;
-            background-color: black;
-            line-height: 23px;
-            color: white;
-            padding: 5px;
-            border-radius: 5px;
-        }
-    }
-    
-
-    .actions{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin-top: 20px;
-        label{
-            font-size: 20px;
-            font-weight: 600;
-            background-color: black;
-            line-height: 23px;
-            color: white;
-            padding: 5px;
-            border-radius: 5px;
-        }
-    }
-    
+/* Custom Styles for the Component */
+.quill-editor {
+  max-height: 600px;
+  overflow-y: auto;
 }
 
-.highlight {
-    background-color: yellow;
-    color: black;
-    font-weight: bold;
+/* Ensure the Quill toolbar is sticky for better UX */
+::ng-deep .ql-toolbar {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Optionally style Quill editor area */
+::ng-deep .ql-container {
+  min-height: 200px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Button Hover Transition for a smooth effect */
+.btn {
+  transition: transform 0.2s ease-in-out;
+}
+
+.btn:hover {
+  transform: scale(1.05);
 }
