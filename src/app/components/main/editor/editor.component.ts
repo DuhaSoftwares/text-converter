@@ -1,7 +1,10 @@
-import {  Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as mammoth from 'mammoth';
 import * as pdfjsLib from 'pdfjs-dist';
-pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs',import.meta.url).toString()
+pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url
+).toString();
 import { saveAs } from 'file-saver';
 import PizZip from 'pizzip';
 import Docxtemplater from 'docxtemplater';
@@ -44,7 +47,7 @@ export class EditorComponent implements OnInit {
       ['clean'], // remove formatting button
     ],
   };
-
+  loading: boolean = false;
   ngOnInit(): void {
     this.loadVoices();
   }
@@ -199,6 +202,7 @@ export class EditorComponent implements OnInit {
     return tempElement.textContent || tempElement.innerText || '';
   }
   async extractTextFromPDF(event: any) {
+    this.loading = true;
     const file = event.target.files[0]; // Fix file selection
     if (!file) return console.error('No file selected');
     if (file.type !== 'application/pdf') {
@@ -226,13 +230,15 @@ export class EditorComponent implements OnInit {
 
         text += pageText + '\n';
       }
-
+      this.loading = false;
       this.inputText = text;
-      console.log('Extracted text:', text);
+      this.showSpeechControls = true;
+      // console.log('Extracted text:', text);
     };
   }
 
   async extractTextFromWord(event: any) {
+    this.loading = true;
     const file = event.target.files[0];
     if (!file) return;
     const validExtensions = [
@@ -248,7 +254,9 @@ export class EditorComponent implements OnInit {
       const result = await mammoth.extractRawText({
         arrayBuffer: e.target!.result as ArrayBuffer,
       });
+      this.loading = false;
       this.inputText = result.value;
+      this.showSpeechControls = true;
     };
     reader.readAsArrayBuffer(file);
   }

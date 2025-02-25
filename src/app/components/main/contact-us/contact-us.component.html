@@ -1,6 +1,6 @@
 <section class="contact-hero">
     <h1>Contact Us</h1>
-    <p>Have a question or suggestion? We'd love to hear from you!</p>
+    <p>Get in touch with us for any queries, support, or collaboration opportunities.</p>
 </section>
 
 <section class="contact-container">
@@ -13,15 +13,19 @@
         <p>🌐 Website: <a href="https://duhasoftwares.com" target="_blank">duhasoftwares.com</a></p>
 
         <h2>🔗 Connect with Us</h2>
+        <p>Follow us on social media for updates, promotions, and new features:</p>
         <div class="social-links">
-            <a href="https://facebook.com/duhasoftwares" target="_blank">Facebook</a> |
-            <a href="https://twitter.com/duhasoftwares" target="_blank">Twitter</a> |
-            <a href="https://linkedin.com/company/duhasoftwares" target="_blank">LinkedIn</a>
+            <a href="https://facebook.com/duhasoftwares" target="_blank" rel="nofollow">Facebook</a> |
+            <a href="https://twitter.com/duhasoftwares" target="_blank" rel="nofollow">Twitter</a> |
+            <a href="https://linkedin.com/company/duhasoftwares" target="_blank" rel="nofollow">LinkedIn</a>
         </div>
     </div>
 
     <div class="contact-form">
         <h2>✉️ Send Us a Message</h2>
+        <p>Have a question about our text editing tools, PDF conversion, or upcoming features? Fill out the form below,
+            and we'll get back to you as soon as possible.</p>
+
         <form (submit)="sendEmail($event)">
             <div class="input-group">
                 <label for="name">Your Name</label>
@@ -41,7 +45,8 @@
             <button type="submit" class="btn-send">Send Message</button>
         </form>
 
-        <p class="success-message" *ngIf="messageSent">✅ Your message has been sent successfully!</p>
+        <p class="success-message" *ngIf="messageSent">✅ Your message has been sent successfully! We'll get back to you
+            soon.</p>
         <p class="error-message" *ngIf="messageError">❌ Oops! Something went wrong. Please try again.</p>
     </div>
 </section>
