@@ -203,6 +203,8 @@ export class EditorComponent implements OnInit {
   }
   async extractTextFromPDF(event: any) {
     this.loading = true;
+    this.inputText=' ';
+    this.stopSpeech()
     const file = event.target.files[0]; // Fix file selection
     if (!file) return console.error('No file selected');
     if (file.type !== 'application/pdf') {
@@ -239,27 +241,44 @@ export class EditorComponent implements OnInit {
 
   async extractTextFromWord(event: any) {
     this.loading = true;
+    this.inputText = ''; // Clear inputText immediately
+    this.stopSpeech()
+  
     const file = event.target.files[0];
-    if (!file) return;
+    if (!file) {
+      this.loading = false;
+      return;
+    }
+  
     const validExtensions = [
       'application/msword',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     ];
+  
     if (!validExtensions.includes(file.type)) {
       alert('Please select a valid Word file.');
+      this.loading = false;
       return;
     }
+  
     const reader = new FileReader();
     reader.onload = async (e) => {
-      const result = await mammoth.extractRawText({
-        arrayBuffer: e.target!.result as ArrayBuffer,
-      });
-      this.loading = false;
-      this.inputText = result.value;
-      this.showSpeechControls = true;
+      try {
+        const result = await mammoth.extractRawText({
+          arrayBuffer: e.target!.result as ArrayBuffer,
+        });
+        this.inputText = result.value; // Set extracted text
+        this.showSpeechControls = true;
+      } catch (error) {
+        console.error('Error extracting text:', error);
+        alert('An error occurred while extracting text.');
+      } finally {
+        this.loading = false; // Ensure loading is disabled after processing
+      }
     };
     reader.readAsArrayBuffer(file);
   }
+  
 
   async shareAsWord() {
     const plainText = this.extractPlainText(this.inputText).trim();

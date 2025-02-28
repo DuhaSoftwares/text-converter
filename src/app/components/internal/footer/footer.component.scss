@@ -1,16 +1,42 @@
-.footer-link {
-  color: #ffffff;
+.footer {
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.footer a {
+  color: white;
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease-in-out;
 }
-.footer-link:hover {
-  color: #ffc107;
+
+.footer a:hover {
+  color: #f8d210; /* Light yellow hover effect */
 }
-.footer-icon i {
-  font-size: 1.2rem;
-  transition: transform 0.3s ease, color 0.3s ease;
+
+.footer-text {
+  font-size: 14px;
+  color: #cccccc;
 }
-.footer-icon i:hover {
+
+.footer-link {
+  font-weight: 500;
+}
+
+.social-icons a {
+  font-size: 18px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.social-icons a:hover {
   transform: scale(1.2);
-  color: #ffc107;
+}
+
+.btn-warning {
+  background-color: #f8d210;
+  border-color: #f8d210;
+  color: #333;
+}
+
+.btn-warning:hover {
+  background-color: #e6bf0c;
 }
