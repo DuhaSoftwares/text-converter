@@ -7,17 +7,16 @@
     <div class="contact-info">
         <h2>📍 Our Office</h2>
         <p><strong>DuhaSoftwares</strong></p>
-        <p>XYZ Street, Srinagar, Jammu & Kashmir, India</p>
-        <p>📧 Email: <a href="mailto:duhasoftwares&#64;outlook.com">duhasoftwares&#64;outlook.com</a></p>
-        <p>📞 Phone: +91-XXXXXXXXXX</p>
+        <p>Gundbal Pampore, Srinagar, Jammu & Kashmir, India</p>
+        <p>📧 Email: <a href="mailto:duhasoftwares@;outlook.com">duhasoftwares&#64;outlook.com</a></p>
+        <p>📞 Phone: <a href="tel:+919797970349" >+91-9797970349</a></p>
         <p>🌐 Website: <a href="https://duhasoftwares.com" target="_blank">duhasoftwares.com</a></p>
 
         <h2>🔗 Connect with Us</h2>
         <p>Follow us on social media for updates, promotions, and new features:</p>
         <div class="social-links">
-            <a href="https://facebook.com/duhasoftwares" target="_blank" rel="nofollow">Facebook</a> |
-            <a href="https://twitter.com/duhasoftwares" target="_blank" rel="nofollow">Twitter</a> |
-            <a href="https://linkedin.com/company/duhasoftwares" target="_blank" rel="nofollow">LinkedIn</a>
+            <a href="https://www.facebook.com/share/1Ek9u5QzU8/" target="_blank" rel="nofollow">Facebook</a> |
+            <a href="https://www.instagram.com/duhasoftwares__?igsh=dm8ybW43b2R0Mno=" target="_blank" rel="nofollow">Instagram</a> 
         </div>
     </div>
 
@@ -42,7 +41,11 @@
                 <textarea id="message" name="message" rows="5" required></textarea>
             </div>
 
-            <button type="submit" class="btn-send">Send Message</button>
+             <!-- ✅ Loader and button -->
+  <button type="submit" class="btn-send" [disabled]="isLoading">
+    <span *ngIf="isLoading">Sending...<div class="loader"></div> </span>
+    <span *ngIf="!isLoading">Send Message</span>
+  </button>
         </form>
 
         <p class="success-message" *ngIf="messageSent">✅ Your message has been sent successfully! We'll get back to you

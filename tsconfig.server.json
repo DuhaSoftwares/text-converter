@@ -1,0 +1,51 @@
+{
+    /**
+     * Extends the base TypeScript configuration from `tsconfig.app.json`.
+     * This allows reusing shared settings while modifying server-specific options.
+     */
+    "extends": "./tsconfig.app.json",
+  
+    "compilerOptions": {
+      /**
+       * Specifies the output directory for compiled server-side files.
+       * The compiled files will be stored in `dist/server`.
+       */
+      "outDir": "dist/server",
+  
+      /**
+       * Defines the ECMAScript module system and target version.
+       * - `"module": "ES2022"` → Uses ES modules (ES2022 standard).
+       * - `"target": "ES2022"` → Compiles TypeScript to ES2022 JavaScript.
+       */
+      "module": "ES2022",
+      "target": "ES2022",
+  
+      /**
+       * Includes Node.js type definitions to support server-side execution.
+       */
+      "types": ["node"],
+  
+      /**
+       * Enables reflection metadata for dependency injection and decorators.
+       * Required for Angular decorators like `@Injectable()`, `@Component()`, etc.
+       */
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true
+    },
+  
+    /**
+     * Specifies entry files for the server-side application.
+     * `src/main.server.ts` is the main entry point for server-side rendering (SSR).
+     */
+    "files": [
+      "src/main.server.ts"
+    ],
+  
+    "angularCompilerOptions": {
+      /**
+       * Disables the Ivy rendering engine for server-side compilation.
+       * (Ivy is generally not needed for SSR builds.)
+       */
+      "enableIvy": false
+    }
+  }

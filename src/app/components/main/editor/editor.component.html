@@ -1,13 +1,17 @@
 <div class="container py-1">
   <!-- Heading Section -->
-  <div class="text-center mb-5">
-    <h4 class="display-5">Welcome to Text Editor</h4>
-    <p class="lead">Edit, extract, listen, and save your text easily</p>
-    <p class="text-muted">
-      Upload PDF and Word files, extract text, and save as a Word document.
-      You can also edit and listen to the text.
-    </p>
+  <div class="justify-content-between d-flex text-center align-items-center my-2">
+
+      <h6 class="d-none d-lg-block w-100">Welcome to<b>Text Conveto</b></h6>
+
+    <div class="d-flex align-items-center justify-content-center w-100 gap-3">
+      <p class="text-muted m-0"><b>Stop Watch</b></p>
+      <button class="btn btn-success px-2 shadow" (click)="startTimer()">▶ Start</button>
+      <button class="btn btn-danger px-2 shadow" (click)="stopTimer()">⏹ Stop</button>
+      <h2 class="timer-display mb-0">{{ formattedTime }}</h2>
+    </div>
   </div>
+
 
   <!-- Loading Spinner -->
   <div *ngIf="loading" class="text-center">
@@ -28,9 +32,28 @@
     Upload PDF and Word files to extract text, save as a Word document, edit, and even listen to your text.
   </div>
 
-  <!-- Speech Controls -->
-  <div class="d-flex justify-content-center mb-4" *ngIf="showSpeechControls">
-    <div class="btn-group">
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap" >
+      <!-- Upload & Save Buttons -->
+      <div class="btn-group shadow-lg mb-2" role="group">
+        <!-- PDF Upload -->
+        <input type="file" id="pdfInput" accept=".pdf" (change)="extractTextFromPDF($event)" hidden />
+        <label for="pdfInput" class="btn btn-outline-primary px-4">
+          📄 Upload PDF
+        </label>
+    
+        <!-- Word Upload -->
+        <input type="file" id="wordInput" accept=".docx,.doc" (change)="extractTextFromWord($event)" hidden />
+        <label for="wordInput" class="btn btn-outline-primary px-4">
+          📝 Upload Word
+        </label>
+    
+        <!-- Save As Word -->
+        <button class="btn btn-outline-success px-4" (click)="shareAsWord()">
+          💾 Save As Word
+        </button>
+      </div>
+    <!-- Speech Controls -->
+    <div class="btn-group mt-sm-2 mt-md-2 mt-mx-2" *ngIf="showSpeechControls">
       <button class="btn btn-primary" (click)="playSpeech()">
         ▶️ Play
       </button>
@@ -47,27 +70,7 @@
         ⬇ Download
       </button>
     </div>
-  </div>
-
-  <!-- File Upload & Actions -->
-  <div class="d-flex justify-content-center mb-3">
-    <div class="btn-group" role="group">
-      <!-- PDF Upload -->
-      <input type="file" id="pdfInput" accept=".pdf" (change)="extractTextFromPDF($event)" hidden />
-      <label for="pdfInput" class="btn btn-outline-primary">
-        📄 Upload PDF
-      </label>
-
-      <!-- Word Upload -->
-      <input type="file" id="wordInput" accept=".docx,.doc" (change)="extractTextFromWord($event)" hidden />
-      <label for="wordInput" class="btn btn-outline-primary">
-        📝 Upload Word
-      </label>
-
-      <!-- Save As Word -->
-      <button class="btn btn-outline-success" (click)="shareAsWord()">
-        💾 Save As Word
-      </button>
-    </div>
-  </div>
+     
+  </div> 
+  
 </div>

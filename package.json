@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:text-editor": "node dist/text-editor/server/server.mjs"
+    "serve:ssr:text-editor": "node dist/server/server.mjs",
+    "build:ssr": "ng build && node dist/server/server.mjs"
   },
   "private": true,
   "dependencies": {
@@ -33,6 +34,7 @@
     "pizzip": "^3.1.8",
     "quill": "^2.0.3",
     "rxjs": "~7.8.0",
+    "sweetalert2": "^11.17.2",
     "tesseract.js": "^6.0.0",
     "tslib": "^2.3.0",
     "vite-plugin-node-polyfills": "^0.23.0",

@@ -28,3 +28,38 @@
 .btn:hover {
   transform: scale(1.05);
 }
+
+
+.timer-display {
+  font-size: 20px;
+  font-weight: 600;
+  color: #28a745;
+  background: #f8f9fa;
+  padding: 4px 8px;
+  border-radius: 8px;
+  display: inline-block;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-group .btn {
+  font-size: 16px;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-group .btn:hover {
+  transform: scale(1.05);
+}
+
+.btn-success,
+.btn-danger {
+  font-size: 14px;
+  border-radius: 10px;
+}
+
+.d-flex.gap-3 button {
+  transition: all 0.3s ease;
+}
+
+.d-flex.gap-3 button:hover {
+  transform: scale(1.1);
+}

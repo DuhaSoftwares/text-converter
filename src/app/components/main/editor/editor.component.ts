@@ -9,6 +9,7 @@ import { saveAs } from 'file-saver';
 import PizZip from 'pizzip';
 import Docxtemplater from 'docxtemplater';
 import { SharedModule } from '../../../shared.module';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-editor',
   imports: [SharedModule],
@@ -48,6 +49,29 @@ export class EditorComponent implements OnInit {
     ],
   };
   loading: boolean = false;
+  elapsedTime = 0; // Time in seconds
+  timer: any;
+  isRunning = false;
+
+  get formattedTime(): string {
+    const minutes = Math.floor(this.elapsedTime / 60);
+    const seconds = this.elapsedTime % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+
+  startTimer() {
+    if (!this.isRunning) {
+      this.isRunning = true;
+      this.timer = setInterval(() => {
+        this.elapsedTime++;
+      }, 1000);
+    }
+  }
+
+  stopTimer() {
+    this.isRunning = false;
+    clearInterval(this.timer);
+  }
   ngOnInit(): void {
     this.loadVoices();
   }
@@ -57,7 +81,12 @@ export class EditorComponent implements OnInit {
   playSpeech() {
     const plainText = this.extractPlainText(this.inputText).trim();
     if (!plainText) {
-      alert('Please enter some text.');
+      Swal.fire({
+        title: 'Input Required!',
+        text: 'Please enter some text.',
+        icon: 'warning',
+        confirmButtonText: 'OK'
+      });
       return;
     }
 
@@ -84,7 +113,7 @@ export class EditorComponent implements OnInit {
         // Listen for voiceschanged event
         this.synth.onvoiceschanged = () => {
           this.voices = this.synth!.getVoices();
-          console.log('Voices updated:', this.voices);
+          // console.log('Voices updated:', this.voices);
         };
       }
     }
@@ -121,7 +150,15 @@ export class EditorComponent implements OnInit {
 
   downloadAudio() {
     if (!this.audioURL) {
-      alert('No recorded audio available to download.');
+       Swal.fire({
+        title: 'No Audio Found!',
+        text: 'No recorded audio available to download.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+  });
+
       return;
     }
 
@@ -203,41 +240,54 @@ export class EditorComponent implements OnInit {
   }
   async extractTextFromPDF(event: any) {
     this.loading = true;
-    this.inputText=' ';
-    this.stopSpeech()
-    const file = event.target.files[0]; // Fix file selection
+    this.inputText = ' ';
+    this.stopSpeech();
+  
+    const file = event.target.files[0];
     if (!file) return console.error('No file selected');
+  
     if (file.type !== 'application/pdf') {
-      alert('Please select a valid PDF file.');
+      Swal.fire({
+        title: 'Invalid File!',
+        text: 'Please select a valid PDF file.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
       return;
     }
+  
     const reader = new FileReader();
     reader.readAsArrayBuffer(file);
-
+  
     reader.onload = async () => {
       if (!reader.result) return;
-
+  
       const pdf = await pdfjsLib.getDocument({ data: reader.result }).promise;
       const maxPages = pdf.numPages;
       let text = '';
-
+  
       for (let pageNum = 1; pageNum <= maxPages; pageNum++) {
         const page = await pdf.getPage(pageNum);
         const content = await page.getTextContent();
-
-        // Use type assertion to fix 'str' property error
+  
+        // Preserve spaces & newlines based on positioning
         const pageText = content.items
-          .map((item) => ('str' in item ? item.str : ''))
-          .join('\n');
-
-        text += pageText + '\n';
+          .map((item: any) => {
+            const str = ('str' in item ? item.str : '');
+            const space = item.hasEOL ? '\n' : ' '; // Handle line breaks
+            return str + space;
+          })
+          .join('');
+  
+        text += pageText + '\n\n'; // Ensure paragraph separation
       }
+  
       this.loading = false;
-      this.inputText = text;
+      this.inputText = text.trim();
       this.showSpeechControls = true;
-      // console.log('Extracted text:', text);
     };
   }
+  
 
   async extractTextFromWord(event: any) {
     this.loading = true;
@@ -256,7 +306,12 @@ export class EditorComponent implements OnInit {
     ];
   
     if (!validExtensions.includes(file.type)) {
-      alert('Please select a valid Word file.');
+      Swal.fire({
+        title: 'Invalid File!',
+        text: 'Please select a valid Word file.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      })
       this.loading = false;
       return;
     }
@@ -270,8 +325,12 @@ export class EditorComponent implements OnInit {
         this.inputText = result.value; // Set extracted text
         this.showSpeechControls = true;
       } catch (error) {
-        console.error('Error extracting text:', error);
-        alert('An error occurred while extracting text.');
+        Swal.fire({
+          title: 'Extraction Error!',
+          text: 'An error occurred while extracting text.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
       } finally {
         this.loading = false; // Ensure loading is disabled after processing
       }
