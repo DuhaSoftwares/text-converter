@@ -9,7 +9,9 @@ import { SharedModule } from '../../../shared.module';
 })
 export class TopNavComponent {
   constructor() { }
+  isMenuOpen: boolean = false;
 
-
-
+toggle(){
+  this.isMenuOpen = !this.isMenuOpen
+}
 }
