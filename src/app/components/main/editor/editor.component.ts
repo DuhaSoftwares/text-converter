@@ -1,10 +1,7 @@
+declare var pdfjsLib:any;
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as mammoth from 'mammoth';
-import * as pdfjsLib from 'pdfjs-dist';
-pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url
-).toString();
+
 import { saveAs } from 'file-saver';
 import PizZip from 'pizzip';
 import Docxtemplater from 'docxtemplater';
@@ -17,9 +14,16 @@ import Swal from 'sweetalert2';
   styleUrl: './editor.component.scss',
 })
 export class EditorComponent implements OnInit {
+
   title = 'text-editor';
   inputText = '';
   synth: typeof speechSynthesis | null = null;
+
+  constructor(){
+    if (this.synth) {
+      this.synth.cancel();
+    }
+  }
   utterance: SpeechSynthesisUtterance | null = null;
   isPaused = false;
   voices: SpeechSynthesisVoice[] = [];
@@ -107,7 +111,7 @@ export class EditorComponent implements OnInit {
 
       // Load voices asynchronously
       this.voices = this.synth.getVoices();
-      console.log('Voices initially:', this.voices);
+      // console.log('Voices initially:', this.voices);
 
       if (this.voices.length === 0) {
         // Listen for voiceschanged event
@@ -142,7 +146,7 @@ export class EditorComponent implements OnInit {
       this.mediaRecorder.onstop = () => {
         const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' }); // Use webm format
         this.audioURL = URL.createObjectURL(audioBlob);
-        console.log('Generated Audio URL:', this.audioURL); // Debugging
+        // console.log('Generated Audio URL:', this.audioURL); // Debugging
       };
       // this.downloadAudio();
     }
@@ -189,7 +193,10 @@ export class EditorComponent implements OnInit {
   }
   stopSpeech() {
     if (this.synth && (this.synth.speaking || this.synth.paused)) {
-      this.synth.cancel();
+      if (this.synth) {
+        this.synth.cancel(); // Stop speech immediately
+      }
+      this.utterance = null;
       this.isPaused = false;
       this.stopRecording();
       this.removeHighlights();
@@ -239,6 +246,9 @@ export class EditorComponent implements OnInit {
     return tempElement.textContent || tempElement.innerText || '';
   }
   async extractTextFromPDF(event: any) {
+    try {
+      
+  
     this.loading = true;
     this.inputText = ' ';
     this.stopSpeech();
@@ -282,10 +292,16 @@ export class EditorComponent implements OnInit {
         text += pageText + '\n\n'; // Ensure paragraph separation
       }
   
-      this.loading = false;
+    
       this.inputText = text.trim();
       this.showSpeechControls = true;
     };
+  } catch (error) {
+      console.log(error)
+  }
+  finally{
+    this.loading = false;
+  }
   }
   
 
